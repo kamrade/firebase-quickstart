@@ -15,15 +15,19 @@
 
     // GET ELEMENTS
     const preObject = document.getElementById('object');
+    const list = document.getElementById('list');
 
     // CREATE REFERENCES
-    const dbRefObject = firebase.database().ref().child('object')
+    const dbRefObject = firebase.database().ref().child('object');
+    const dbRefList = dbRefObject.child('hobbies');
 
     // SYNC OBJECTS CHANGES
     dbRefObject.on('value', snap => {
-        preObject.innerText = JSON.stringify(snap.val(), null, 3);
-    }
-    );
+            preObject.innerText = JSON.stringify(snap.val(), null, 3);
+        });
+    // SYNC LIST CHANGES
+    dbRefList.on('child_added', snap => console.log(snap.val()));
+
 
 
 }());
