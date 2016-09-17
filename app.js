@@ -15,7 +15,7 @@
 
     // GET ELEMENTS
     const preObject = document.getElementById('object');
-    const list = document.getElementById('list');
+    const ulList = document.getElementById('list');
 
     // CREATE REFERENCES
     const dbRefObject = firebase.database().ref().child('object');
@@ -26,7 +26,22 @@
             preObject.innerText = JSON.stringify(snap.val(), null, 3);
         });
     // SYNC LIST CHANGES
-    dbRefList.on('child_added', snap => console.log(snap.val()));
+    dbRefList.on('child_added', snap => {
+        const li = document.createElement('li');
+        li.innerText = snap.val();
+        li.id = snap.key;
+        ulList.appendChild(li);
+    });
+
+    dbRefList.on('child_changed', snap => {
+        const liChanged = document.getElementById(snap.key);
+        liChanged.innerText = snap.val();
+    });
+
+    dbRefList.on('child_removed', snap => {
+        const liToRemove = document.getElementById(snap.key);
+        liToRemove.remove();
+    });
 
 
 
