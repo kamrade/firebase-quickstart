@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Firebase Quickstart</title>
+    <link rel="stylesheet" href="app.css">
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
 </head>
 <body>
 
-    <!-- Value -->
-    <pre id="object"></pre>
-
-    <!-- Child -->
-    <ul id="list">
-
-    </ul>
+    <div class="container">
+        <input type="email" placeholder="Email" id="txtEmail">
+        <input type="password" placeholder="Password" id="txtPassword">
+        <button id="btnLogin" class="btn btn-action">Log In</button>
+        <button id="btnSignUp" class="btn btn-secondary">Sign Up</button>
+        <button id="btnLogout" class="btn btn-action hide">Log out</button>
+    </div>
 
 
     <script src="app.js"></script>

@@ -13,36 +13,50 @@
     };
     firebase.initializeApp(config);
 
-    // GET ELEMENTS
-    const preObject = document.getElementById('object');
-    const ulList = document.getElementById('list');
+    // cache DOM
+    const txtEmail = document.getElementById('txtEmail');
+    const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnSignUp = document.getElementById('btnSignUp');
+    const btnLogout = document.getElementById('btnLogout');
 
-    // CREATE REFERENCES
-    const dbRefObject = firebase.database().ref().child('object');
-    const dbRefList = dbRefObject.child('hobbies');
-
-    // SYNC OBJECTS CHANGES
-    dbRefObject.on('value', snap => {
-            preObject.innerText = JSON.stringify(snap.val(), null, 3);
-        });
-    // SYNC LIST CHANGES
-    dbRefList.on('child_added', snap => {
-        const li = document.createElement('li');
-        li.innerText = snap.val();
-        li.id = snap.key;
-        ulList.appendChild(li);
+    // Add login event
+    btnLogin.addEventListener('click', e => {
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth();
+        // sign in
+        const promise = auth.signInWithEmailAndPassword(email, pass);
+        promise.catch(e => console.log(e.message));
     });
 
-    dbRefList.on('child_changed', snap => {
-        const liChanged = document.getElementById(snap.key);
-        liChanged.innerText = snap.val();
+    // Add sign Up event
+    btnSignUp.addEventListener('click', e => {
+        // Get email and pass
+        // TODO: check for real email
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth();
+        // sign in
+        const promise = auth.createUserWithEmailAndPassword(email, pass);
+        promise
+            .catch(e => console.log(e.message));
     });
 
-    dbRefList.on('child_removed', snap => {
-        const liToRemove = document.getElementById(snap.key);
-        liToRemove.remove();
-    });
+    btnLogout.addEventListener('click', e => {
+        firebase.auth().signOut();
+    })
 
+    // Add a real time listener
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if(firebaseUser){
+            console.log(firebaseUser);
+            btnLogout.classList.remove('hide');
+        } else {
+            console.log('not logged in');
+            btnLogout.classList.add('hide');
+        }
+    });
 
 
 }());
